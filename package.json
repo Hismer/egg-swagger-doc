@@ -1,7 +1,7 @@
 {
-  "name": "egg-swagger-doc",
+  "name": "egg-doc",
   "version": "2.2.8",
-  "description": "swagger for egg",
+  "description": "swagger for egg衍生优化版",
   "eggPlugin": {
     "name": "swaggerdoc"
   },
