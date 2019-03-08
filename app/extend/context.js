@@ -5,9 +5,7 @@ const RULE = Symbol('Context#rule');
 module.exports = {
   get rule() {
     if (!this[RULE]) {
-
       this[RULE] = getValidateRuler(this.app);
-
     }
     return this[RULE];
   },
