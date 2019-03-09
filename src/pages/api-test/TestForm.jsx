@@ -472,7 +472,7 @@ class TestForm extends Component {
           });
           return;
         }
-        if (result.status === 200 || result.status === 201) {
+        if (result.status >= 200 && result.state <= 300) {
           antdMessage.info(
             testApiUrl + "   ===>  http响应状态码: " + result.status
           );
@@ -524,6 +524,8 @@ class TestForm extends Component {
             apiExecute: false
           });
         } else {
+          delete result.request;
+          delete result.config;
           that.setState({
             apiExecute: false,
             serverResp: JSON.stringify(result, null, 3)
