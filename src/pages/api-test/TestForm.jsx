@@ -462,6 +462,9 @@ class TestForm extends Component {
       if ("undefined" !== typeof this.state["__bodyForm"]) {
         values["__bodyForm"] = this.state["__bodyForm"];
       }
+      for (const key in values.__form) {
+        if (!values.__form[key]) delete values.__form[key];
+      }
       console.log(values); //__path, __header, __form, __bodyForm
       const printResponse = result => {
         if (!result) {

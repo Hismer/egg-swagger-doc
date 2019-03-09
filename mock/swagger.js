@@ -20,7 +20,7 @@ export default {
       "/products": {
         post: {
           tags: ["产品"],
-          summary: "创建产品资源 ",
+          summary: "新增产品 ",
           description: "",
           operationId: "controller-products-create",
           consumes: ["application/json"],
@@ -60,12 +60,87 @@ export default {
             }
           },
           deprecated: false
+        },
+        get: {
+          tags: ["产品"],
+          summary: "产品列表 ",
+          description: "",
+          operationId: "controller-products-index",
+          consumes: ["application/json"],
+          produces: ["application/json"],
+          parameters: [
+            {
+              in: "header",
+              type: "string",
+              name: "Authorization",
+              required: false,
+              description: "授权凭据 "
+            },
+            {
+              in: "header",
+              type: "string",
+              name: "X-Ca-Stage",
+              required: false,
+              description: "制定请求环境 "
+            },
+            {
+              in: "query",
+              type: "integer",
+              name: "limit",
+              required: false,
+              description: "列表显示数量 "
+            },
+            {
+              in: "query",
+              type: "integer",
+              name: "page",
+              required: false,
+              description: "当前页码 "
+            },
+            {
+              in: "query",
+              type: "integer",
+              name: "offset",
+              required: false,
+              description: "记录偏移量（页码未填写时生效） "
+            },
+            {
+              in: "query",
+              type: "boolean",
+              name: "with_total",
+              required: false,
+              description: "附带总数统计 "
+            },
+            {
+              in: "query",
+              type: "boolean",
+              name: "with_data",
+              required: false,
+              description: "附带结果数据 "
+            }
+          ],
+          security: [],
+          responses: {
+            "200": {
+              schema: { $ref: "#/definitions/ProductList" },
+              description: "更新成功 "
+            },
+            "400": {
+              schema: { $ref: "#/definitions/Exception" },
+              description: "校验失败 "
+            },
+            "404": {
+              schema: { $ref: "#/definitions/Exception" },
+              description: "资源不存在 "
+            }
+          },
+          deprecated: false
         }
       },
       "/products/{id}": {
         put: {
           tags: ["产品"],
-          summary: "更新产品资源 ",
+          summary: "更新产品 ",
           description: "",
           operationId: "controller-products-update",
           consumes: ["application/json"],
@@ -102,13 +177,61 @@ export default {
           ],
           security: [],
           responses: {
-            "204": {
+            "204": { description: "更新成功 " },
+            "400": {
+              schema: { $ref: "#/definitions/Exception" },
+              description: "校验失败 "
+            },
+            "404": {
+              schema: { $ref: "#/definitions/Exception" },
+              description: "资源不存在 "
+            }
+          },
+          deprecated: false
+        },
+        get: {
+          tags: ["产品"],
+          summary: "产品详情 ",
+          description: "",
+          operationId: "controller-products-show",
+          consumes: ["application/json"],
+          produces: ["application/json"],
+          parameters: [
+            {
+              in: "header",
+              type: "string",
+              name: "Authorization",
+              required: false,
+              description: "授权凭据 "
+            },
+            {
+              in: "header",
+              type: "string",
+              name: "X-Ca-Stage",
+              required: false,
+              description: "制定请求环境 "
+            },
+            {
+              in: "path",
+              type: "string",
+              name: "id",
+              required: true,
+              description: "产品型号 "
+            }
+          ],
+          security: [],
+          responses: {
+            "200": {
               schema: { $ref: "#/definitions/ProductShow" },
-              description: "产品对象 "
+              description: "更新成功 "
             },
             "400": {
               schema: { $ref: "#/definitions/Exception" },
               description: "校验失败 "
+            },
+            "404": {
+              schema: { $ref: "#/definitions/Exception" },
+              description: "资源不存在 "
             }
           },
           deprecated: false
@@ -319,27 +442,43 @@ export default {
           "updated_at"
         ],
         properties: {
-          id: { type: "string", discription: "设备型号", example: "D60" },
-          name: { type: "string", example: "家用D60点歌机" },
+          id: { type: "string", description: "产品型号", example: "D60" },
+          name: {
+            type: "string",
+            description: "产品名称",
+            example: "家用D60点歌机"
+          },
           shipment_verification: {
             type: "string",
-            discription:
+            description:
               "设备出货校验模式：ignore 不校验，chip_id 芯片SN校验，motherboard_code 主板SN校验, barcode_num 条形码SN校验",
             example: "ignore"
           },
-          created_at: { type: "string", example: "2019-3-6 05:36:00" },
-          updated_at: { type: "string", example: "2019-3-6 05:36:00" }
+          created_at: {
+            type: "string",
+            example: "2019-3-6 05:36:00",
+            description: "创建时间"
+          },
+          updated_at: {
+            type: "string",
+            example: "2019-3-6 05:36:00",
+            description: "更新时间"
+          }
         }
       },
       ProductCreate: {
         type: "object",
         required: ["id", "name", "shipment_verification"],
         properties: {
-          id: { type: "string", discription: "设备型号", example: "D60" },
-          name: { type: "string", example: "家用D60点歌机" },
+          id: { type: "string", description: "产品型号", example: "D60" },
+          name: {
+            type: "string",
+            description: "产品名称",
+            example: "家用D60点歌机"
+          },
           shipment_verification: {
             type: "string",
-            discription:
+            description:
               "设备出货校验模式：ignore 不校验，chip_id 芯片SN校验，motherboard_code 主板SN校验, barcode_num 条形码SN校验",
             example: "ignore"
           }
@@ -349,10 +488,14 @@ export default {
         type: "object",
         required: ["name", "shipment_verification"],
         properties: {
-          name: { type: "string", example: "家用D60点歌机" },
+          name: {
+            type: "string",
+            description: "产品名称",
+            example: "家用D60点歌机"
+          },
           shipment_verification: {
             type: "string",
-            discription:
+            description:
               "设备出货校验模式：ignore 不校验，chip_id 芯片SN校验，motherboard_code 主板SN校验, barcode_num 条形码SN校验",
             example: "ignore"
           }
