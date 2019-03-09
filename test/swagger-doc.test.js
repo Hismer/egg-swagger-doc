@@ -14,19 +14,19 @@ describe("test/swagger-doc.test.js", () => {
   after(() => app.close());
   afterEach(mock.restore);
 
-  it("should GET /swagger-ui.html", () => {
+  it("should GET /index.html", () => {
     const { basePath } = app.config.swaggerdoc;
     return app
       .httpRequest()
-      .get(`${basePath}/swagger-ui.html`)
+      .get(`${basePath}/index.html`)
       .expect(200);
   });
 
-  it("should GET /swagger-doc", () => {
+  it("should GET /swagger.json", () => {
     const { basePath } = app.config.swaggerdoc;
     return app
       .httpRequest()
-      .get(`${basePath}/swagger-doc`)
+      .get(`${basePath}/swagger.json`)
       .expect(200);
   });
 });

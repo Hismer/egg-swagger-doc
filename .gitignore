@@ -3,6 +3,8 @@ run
 .travis.yml
 appveyor.yml
 
+app/public
+
 # Logs
 logs
 
